@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marco Mahrer — Talent Acquisition Partner</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── BRAND PALETTE ── */
+:root {
+  --brand-orange:  #EB6320;
+  --brand-purple:  #301c57;
+  --brand-red:     #DF3912;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif;
+  background: #fafafa;
+  color: #1a1a1a;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* NAV */
+nav {
+  position: sticky; top: 0;
+  background: rgba(250,250,250,0.93);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #eee;
+  padding: 0 48px; height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 100;
+}
+.nav-logo { text-decoration: none; display: inline-flex; align-items: center; }
+.nav-logo svg { display: block; }
+.nav-links { display: flex; gap: 32px; }
+.nav-links a { font-size: 15px; color: #999; text-decoration: none; letter-spacing: 0.02em; transition: color 0.15s; }
+.nav-links a:hover, .nav-links a.active { color: var(--brand-orange); }
+
+/* HERO */
+.hero {
+  min-height: 88vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; padding: 80px 40px;
+  background: linear-gradient(160deg, #fafafa 0%, #f2f2ef 100%);
+}
+.hero-loc { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #bbb; margin-bottom: 20px; }
+.hero-name {
+  font-family: Georgia, serif; font-size: clamp(42px, 7vw, 72px); font-weight: 700; line-height: 1.1; margin-bottom: 10px;
+  background: linear-gradient(90deg, #1a1a1a 0%, #1a1a1a 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  background-size: 100% 100%; transition: background 0.5s ease;
+}
+.hero-name:hover {
+  background: linear-gradient(90deg, #301c57 0%, #301c57 18%, #DF3912 45%, #EB6320 65%, #EB6320 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-title { font-size: 14px; color: #aaa; letter-spacing: 0.06em; margin-bottom: 36px; }
+.hero-quote {
+  max-width: 560px; font-family: Georgia, serif; font-size: 17px; font-style: italic;
+  color: #555; line-height: 1.75; margin-bottom: 44px; position: relative; padding: 0 8px;
+}
+.hero-quote::before { content: '\201C'; font-size: 52px; color: #e0e0e0; position: absolute; top: -18px; left: -12px; font-family: Georgia, serif; line-height: 1; }
+.milestones { display: flex; gap: 36px; flex-wrap: wrap; justify-content: center; }
+.milestone { text-align: center; }
+.milestone-val { display: block; font-size: 15px; font-weight: 600; color: #444; }
+.milestone-label { font-size: 11px; color: #bbb; letter-spacing: 0.06em; }
+
+/* SECTION WRAPPER */
+.section-wrap { max-width: 760px; margin: 0 auto; padding: 80px 40px; }
+.section-label { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: #ccc; margin-bottom: 6px; }
+.section-title { font-family: Georgia, serif; font-size: 30px; font-weight: 700; margin-bottom: 8px; }
+.section-hint { font-size: 13px; color: #ccc; margin-bottom: 52px; }
+
+/* TIMELINE */
+.timeline { position: relative; }
+.timeline::before {
+  content: ''; position: absolute; left: 10px; top: 10px; bottom: 0;
+  width: 1px; background: #ececec;
+}
+
+/* TENURE */
+.tenure { position: relative; padding-left: 38px; margin-bottom: 4px; }
+.tenure-dot {
+  position: absolute; left: 4px; top: 9px;
+  width: 13px; height: 13px; border-radius: 50%;
+  border: 2px solid #d0d0d0; background: #fafafa;
+  transition: all 0.2s; cursor: pointer; z-index: 1;
+}
+.tenure.open > .tenure-dot { border-color: var(--brand-purple); background: var(--brand-purple); }
+.tenure-header { cursor: pointer; padding: 4px 0 18px 0; user-select: none; }
+.tenure-header:hover .tenure-company { color: var(--brand-orange); }
+.tenure-company {
+  font-family: Georgia, serif; font-size: 20px; font-weight: 700; color: #1a1a1a;
+  transition: color 0.15s; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+}
+.tenure-note { font-size: 12px; font-family: -apple-system, sans-serif; font-weight: 400; color: #bbb; font-style: normal; }
+.tenure-loc { font-size: 12px; color: #ccc; margin-top: 3px; }
+.tenure-roles { margin-top: 6px; display: flex; flex-direction: column; gap: 3px; }
+.tenure-role { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.role-title { font-size: 13px; font-weight: 500; color: #444; }
+.role-dates { font-size: 12px; color: #ccc; }
+.tenure-hint { font-size: 11px; color: #ddd; margin-top: 8px; letter-spacing: 0.03em; transition: color 0.15s; }
+.tenure-header:hover .tenure-hint { color: var(--brand-purple); }
+
+/* LAYERS */
+.layer { overflow: hidden; }
+.layer.hidden { display: none; }
+.layer-card {
+  background: #fff; border: 1px solid #eeeeec; border-radius: 8px;
+  padding: 18px 20px; margin-bottom: 6px; margin-left: -4px;
+  position: relative; animation: fadeSlide 0.2s ease;
+}
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+.layer-close {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; font-size: 20px; line-height: 1;
+  color: #ddd; cursor: pointer; transition: color 0.15s; padding: 0;
+}
+.layer-close:hover { color: #888; }
+
+/* Layer 2 */
+.layer-desc { font-size: 14px; color: #555; line-height: 1.75; padding-right: 28px; }
+.layer-action {
+  margin-top: 14px; display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; color: #bbb; cursor: pointer; background: none; border: none;
+  padding: 0; letter-spacing: 0.03em; transition: color 0.15s;
+}
+.layer-action:hover { color: var(--brand-orange); }
+.layer-action .arr { font-size: 11px; transition: transform 0.15s; }
+.layer-action:hover .arr { transform: translateX(2px); }
+
+/* Layer 3 */
+.bullet-list { list-style: none; padding: 0; padding-right: 28px; }
+.bullet-list li {
+  font-size: 13.5px; color: #555; line-height: 1.65;
+  padding: 5px 0 5px 16px; position: relative;
+  border-bottom: 1px solid #f8f8f8;
+}
+.bullet-list li:last-child { border-bottom: none; }
+.bullet-list li::before { content: '·'; position: absolute; left: 2px; color: var(--brand-purple); font-size: 22px; font-weight: 700; line-height: 1.25; }
+.bullet-list .sub-head {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #bbb; padding-left: 0; margin-top: 10px; margin-bottom: 0;
+  border-bottom: none; font-style: normal;
+}
+.bullet-list .sub-head::before { display: none; }
+
+/* Layer 4 chips */
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; padding-right: 28px; }
+.chip {
+  display: inline-block; padding: 4px 12px; border-radius: 99px;
+  font-size: 12px; border: 1px solid; white-space: nowrap;
+}
+.chip.ats       { background: #e8f0f8; color: #2c5f8a; border-color: #c5d9ed; }
+.chip.sourcing  { background: #ede8f8; color: #5a3d8a; border-color: #d4c8f0; }
+.chip.assess    { background: #e8f5ee; color: #2a6b4a; border-color: #b8dfc8; }
+.chip.schedule  { background: #fdf0e0; color: #8a5a1a; border-color: #f0d4a0; }
+.chip.notes     { background: #fce8ee; color: #8a3050; border-color: #f0c0d0; }
+.chip.ai        { background: #e0f5e0; color: #1a6a1a; border-color: #90dca0; }
+.chip.reporting { background: #f5f5e0; color: #6a6a1a; border-color: #d8d890; }
+.chip.workspace { background: #f0f0f0; color: #666;    border-color: #ddd; }
+
+/* SYSTEMS EVOLUTION */
+.evo-section { background: #fff; border-top: 1px solid #eee; padding: 80px 40px; }
+.evo-inner { max-width: 920px; margin: 0 auto; }
+.evo-caption { font-size: 13px; color: #bbb; font-style: italic; margin: 6px 0 32px 0; }
+.evo-scroll { overflow-x: auto; }
+.evo-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.evo-table thead th {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #bbb; padding: 0 10px 18px 10px; text-align: center;
+  font-weight: 500; white-space: nowrap;
+}
+.evo-table thead th:first-child { text-align: left; width: 110px; padding-left: 0; }
+.col-dates { display: block; font-size: 9px; color: #ddd; letter-spacing: 0.04em; margin-top: 2px; }
+.evo-table tbody tr:hover td { background: #fafafa; }
+.evo-table td {
+  padding: 8px 10px; border-top: 1px solid #f5f5f5;
+  vertical-align: middle; text-align: center;
+}
+.evo-table td:first-child {
+  text-align: left; padding-left: 0;
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #bbb; font-weight: 500; white-space: nowrap;
+}
+.evo-absent { font-size: 13px; color: #e8e8e8; }
+.evo-cell {
+  display: inline-block; padding: 3px 9px; border-radius: 4px;
+  font-size: 11px; white-space: nowrap; border: 1px solid transparent;
+}
+.evo-cell.used { background: #f0f4f8; color: #4a6a8a; border-color: #dce8f0; }
+.evo-cell.new  { background: #dde8f5; color: #2c5f8a; border-color: #aac4e0; }
+.evo-cell.ai   { background: #ddf5e0; color: #1a6a1a; border-color: #90daa0; font-weight: 500; }
+.evo-legend { display: flex; gap: 20px; margin-top: 24px; flex-wrap: wrap; }
+.evo-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #aaa; }
+.evo-dot { width: 10px; height: 10px; border-radius: 3px; border: 1px solid; }
+.evo-dot.used { background: #f0f4f8; border-color: #dce8f0; }
+.evo-dot.new  { background: #dde8f5; border-color: #aac4e0; }
+.evo-dot.ai   { background: #ddf5e0; border-color: #90daa0; }
+
+/* SKILLS */
+.skills-section { max-width: 760px; margin: 0 auto; padding: 80px 40px; }
+.skill-group { margin-bottom: 28px; }
+.skill-group-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #ccc; margin-bottom: 10px; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.cert-text, .lang-text { font-size: 13px; color: #999; line-height: 1.9; }
+
+/* FOOTER */
+footer { background: var(--brand-purple); padding: 56px 48px; }
+.footer-inner { max-width: 760px; margin: 0 auto; }
+.footer-name { font-family: Georgia, serif; font-size: 20px; color: #fff; margin-bottom: 8px; }
+.footer-sub { font-size: 12px; color: #8070aa; margin-bottom: 36px; }
+.footer-bottom { font-size: 11px; color: #6a5a8a; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 8px; }
+
+
+/* ── MOBILE: hamburger toggle ── */
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
+.nav-toggle span { display: block; width: 20px; height: 2px; background: #999; margin: 4px 0; transition: 0.2s; }
+
+@media (max-width: 700px) {
+  /* NAV — collapsible */
+  nav { padding: 0 20px; flex-wrap: wrap; height: auto; min-height: 52px; }
+  .nav-logo svg { width: 68px; height: 22px; }
+  .nav-toggle { display: block; }
+  .nav-links {
+    display: none; width: 100%; gap: 0;
+    flex-direction: column; padding: 8px 0 12px;
+    border-top: 1px solid #eee;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 10px 0; font-size: 14px; }
+
+  /* HERO */
+  .hero { min-height: 70vh; padding: 60px 20px; }
+  .hero-loc { font-size: 10px; margin-bottom: 14px; }
+  .hero-quote { font-size: 15px; padding: 0; }
+  .hero-quote::before { font-size: 36px; top: -12px; left: -6px; }
+  .milestones { gap: 16px; }
+  .milestone-val { font-size: 13px; }
+  .milestone-label { font-size: 10px; }
+
+  /* SECTIONS */
+  .section-wrap { padding: 48px 20px; }
+  .section-title { font-size: 22px; }
+
+  /* TIMELINE */
+  .tenure { padding-left: 28px; }
+  .tenure-dot { left: 0; }
+  .tenure-company { font-size: 16px; }
+  .tenure-loc { font-size: 11px; }
+  .role-title { font-size: 12px; }
+  .role-dates { font-size: 11px; }
+  .tenure-hint { font-size: 10px; }
+  .layer-desc { font-size: 13px; line-height: 1.7; padding-right: 20px; }
+  .bullet-list li { font-size: 12.5px; padding-right: 0; }
+  .chip-row { gap: 5px; }
+  .chip { font-size: 11px; padding: 3px 8px; }
+
+  /* SYSTEMS TABLE */
+  .evo-section { padding: 48px 20px; }
+  .evo-table { min-width: 580px; }
+  .evo-table thead th { font-size: 9px; padding: 0 6px 12px; }
+  .evo-table td { padding: 6px; font-size: 10px; }
+  .evo-cell { font-size: 10px; padding: 2px 6px; }
+
+  /* SKILLS */
+  .skills-section { padding: 48px 20px; }
+  .cert-text, .lang-text { font-size: 12px; }
+
+  /* FOOTER */
+  footer { padding: 40px 20px; }
+  .footer-name svg { width: 72px !important; height: 24px !important; }
+  .footer-sub { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#top" class="nav-logo"><svg viewBox="150 265 725 240" width="88" height="29" aria-label="TAP³"><defs><linearGradient id="nav-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#301c57"/><stop offset="18%" stop-color="#301c57"/><stop offset="45%" stop-color="#DF3912"/><stop offset="65%" stop-color="#EB6320"/><stop offset="100%" stop-color="#EB6320"/></linearGradient></defs><path fill="url(#nav-grad)" d="m769.61 268.87v10.551h79.441l-41.584 46.238v8.3789h11.793c13.033 0 22.653 2.4819 29.48 7.1367 6.5167 4.9651 9.9297 11.483 9.9297 19.861 0 8.6889-3.4132 15.205-10.24 19.859-6.827 4.9651-16.447 7.1367-29.48 7.1367-9.9302 0-19.24-1.2406-27.309-4.3438-8.0683-2.7929-14.583-6.5171-18.928-11.172l-5.5859 9.3105c4.6548 4.9651 11.792 8.9984 21.102 12.102 9.3096 3.1032 19.549 4.6562 30.721 4.6562 16.447 0 29.171-3.4152 38.17-10.242 8.9993-6.827 13.654-16.135 13.654-27.307 0-10.861-4.344-19.552-12.723-26.379-8.3786-6.5167-20.172-9.9299-35.688-10.24l42.824-47.479v-8.0684zm-616.38 13.03v14.275h78.201v202.95h15.826v-202.95h78.201v-14.28zm263.88 0-99.924 217.22h17.068l90.613-199.85 90.924 199.85h17.068l-99.94-217.22zm155.18 0v14.275h77.891c22.964 0 40.652 5.2751 53.064 15.516 12.102 10.241 18.311 24.826 18.311 43.445 0 18.93-6.2081 33.515-18.311 43.445-12.413 10.241-30.101 15.205-53.064 15.205h-77.891v85.338h15.826v-71.062h62.064c27.308 0 48.72-6.2068 64.236-19.24s23.273-30.722 23.273-53.686c0-22.653-7.7575-40.652-23.273-53.686-15.516-13.033-36.928-19.551-64.236-19.551z"/></svg></a>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-links">
+    <a href="#top" class="active">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#evolution">Systems</a>
+    <a href="#skills">Skills</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="hero-loc">Zurich, Switzerland · Swiss &amp; American</div>
+  <h1 class="hero-name">Marco Mahrer</h1>
+  <p class="hero-title">Talent Acquisition Partner</p>
+  <p class="hero-quote">I build hiring functions that scale — designing the infrastructure and automation that lets organisations hire better without adding headcount. 15 years in tech TA across Europe. AI-native. Three unicorns grown.</p>
+  <div class="milestones">
+    <div class="milestone"><span class="milestone-val">4,500+</span><span class="milestone-label">Interviews</span></div>
+    <div class="milestone"><span class="milestone-val">350+</span><span class="milestone-label">Hires</span></div>
+    <div class="milestone"><span class="milestone-val">15 Years</span><span class="milestone-label">in Tech TA</span></div>
+    <div class="milestone"><span class="milestone-val">7 Orgs</span><span class="milestone-label">Grown</span></div>
+    <div class="milestone"><span class="milestone-val">3</span><span class="milestone-label">Tech Unicorns</span></div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<div class="section-wrap" id="experience">
+  <div class="section-label">Career History</div>
+  <h2 class="section-title">Experience</h2>
+  <p class="section-hint">Click any role to explore — four layers of detail from summary to full tech stack.</p>
+
+  <div class="timeline">
+
+    <!-- 1. Caffeine.ai -->
+    <div class="tenure" id="t1">
+      <div class="tenure-dot"></div>
+      <div class="tenure-header" onclick="openL2('t1')">
+        <div class="tenure-company">Caffeine.ai</div>
+        <div class="tenure-loc">Zurich, Switzerland</div>
+        <div class="tenure-roles">
+          <div class="tenure-role"><span class="role-title">Staff Recruiter</span><span class="role-dates">January 2025 – Present</span></div>
+        </div>
+        <div class="tenure-hint">+ Click to explore</div>
+      </div>
+      <div class="layer hidden" id="t1-l2">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t1',2)">×</button>
+          <p class="layer-desc">Built the entire TA function from scratch — architecting the full stack from ATS and CRM to AI note-takers and self-built MCPs, wired into a unified, mirrored system. Ran a 7-track engineering hiring function at full-team output as a team of one, through multi-channel sourcing and automated screening pipelines. Embedded hiring culture across the organisation — aligning how teams calibrate on signal, evaluate candidates, and close.</p>
+          <button class="layer-action" onclick="openL3('t1')">Go deeper <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t1-l3">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t1',3)">×</button>
+          <ul class="bullet-list">
+            <li>Architected the TA OS from scratch — AI as the operating layer, running a full 7-track engineering hiring function at full-team output as a team of one</li>
+            <li>Built a multi-channel talent acquisition engine — outbound sourcing, inbound funnel design, employer brand content across social platforms, and direct event recruiting</li>
+            <li>Designed the end-to-end hiring system — automated technical screening pipelines, a structured interview library, two-phase evaluation process, and headcount planning</li>
+            <li>Partnered with hiring managers across 7 engineering tracks to build role-specific interview frameworks, align on hiring signal, and maintain calibration at speed</li>
+          </ul>
+          <button class="layer-action" onclick="openL4('t1')">See stack <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t1-l4">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t1',4)">×</button>
+          <div class="chip-row">
+            <span class="chip ats">GEM</span>
+            <span class="chip sourcing">LinkedIn Recruiter</span>
+            <span class="chip assess">CoderByte</span>
+            <span class="chip notes">MetaView</span>
+            <span class="chip ai">Claude</span>
+            <span class="chip reporting">Custom Coded</span>
+            <span class="chip workspace">Google Workspace</span>
+            <span class="chip workspace">Slack</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. TAP³ -->
+    <div class="tenure" id="t2">
+      <div class="tenure-dot"></div>
+      <div class="tenure-header" onclick="openL2('t2')">
+        <div class="tenure-company">TAP³</div>
+        <div class="tenure-loc">Zurich, Switzerland</div>
+        <div class="tenure-roles">
+          <div class="tenure-role"><span class="role-title">Founder &amp; Consultant</span><span class="role-dates">May 2023 – Present</span></div>
+        </div>
+        <div class="tenure-hint">+ Click to explore</div>
+      </div>
+      <div class="layer hidden" id="t2-l2">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t2',2)">×</button>
+          <p class="layer-desc">Dual-sided talent advisory practice — partnering with international tech companies on TA strategy, ATS architecture, employer branding, and fractional recruiting, while coaching candidates on positioning, CVs, and applications.</p>
+          <button class="layer-action" onclick="openL3('t2')">Go deeper <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t2-l3">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t2',3)">×</button>
+          <ul class="bullet-list">
+            <li>Dual-sided talent advisory — partnering with international tech companies on TA strategy, ATS architecture, employer branding, and fractional recruiting, while coaching candidates on positioning, CVs, and applications</li>
+            <li>TA strategy advisory and fractional recruiting for high-growth tech companies</li>
+            <li>Candidate coaching: resume design, positioning, and application strategy</li>
+            <li>ATS/CRM system architecture consulting</li>
+            <li>EVP creation and employer branding support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. DFINITY -->
+    <div class="tenure" id="t3">
+      <div class="tenure-dot"></div>
+      <div class="tenure-header" onclick="openL2('t3')">
+        <div class="tenure-company">DFINITY Foundation</div>
+        <div class="tenure-loc">Zurich, Switzerland</div>
+        <div class="tenure-roles">
+          <div class="tenure-role"><span class="role-title">Freelance Recruiter (TAP³)</span><span class="role-dates">June 2024 – December 2024</span></div>
+          <div class="tenure-role"><span class="role-title">Senior Recruiter</span><span class="role-dates">November 2021 – April 2023</span></div>
+        </div>
+        <div class="tenure-hint">+ Click to explore</div>
+      </div>
+      <div class="layer hidden" id="t3-l2">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t3',2)">×</button>
+          <p class="layer-desc">Owned R&amp;D Engineering hiring end-to-end at one of Europe's leading Blockchain/Web3 organisations — contributed to 100 hires in 2022 across Zurich and San Francisco, covering the full spectrum from C-suite to contractors and interns in one of the most specialised and competitive talent markets in tech.</p>
+          <button class="layer-action" onclick="openL3('t3')">Go deeper <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t3-l3">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t3',3)">×</button>
+          <ul class="bullet-list">
+            <li>Owned R&amp;D Engineering hiring end-to-end in one of the most competitive and specialised talent markets in tech — contributed to 100 hires in 2022, the organisation's highest-output hiring year, across Zurich and San Francisco</li>
+            <li>Hired across the full spectrum of a Web3 organisation — R&amp;D Engineering, Research, Operations, and Leadership, from C-suite to contractors and interns</li>
+            <li>Built and managed targeted outreach campaigns to source specialised Blockchain/Web3 engineering talent in a globally competitive, niche candidate market</li>
+            <li>Partnered with hiring managers to design role-specific interview frameworks and calibration sessions across R&amp;D and technical functions</li>
+            <li>Configured and administered Greenhouse ATS; built and managed pipeline workflows and candidate engagement sequences in GEM CRM</li>
+            <li>Developed and implemented diversity and inclusion hiring strategies</li>
+            <li>Fostered relationships with universities and research institutions for R&amp;D talent pipeline</li>
+          </ul>
+          <button class="layer-action" onclick="openL4('t3')">See stack <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t3-l4">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t3',4)">×</button>
+          <div class="chip-row">
+            <span class="chip ats">Greenhouse</span>
+            <span class="chip ats">GEM</span>
+            <span class="chip sourcing">LinkedIn Recruiter</span>
+            <span class="chip assess">CoderPad</span>
+            <span class="chip notes">MetaView</span>
+            <span class="chip workspace">Google Workspace</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. GetYourGuide -->
+    <div class="tenure" id="t4">
+      <div class="tenure-dot"></div>
+      <div class="tenure-header" onclick="openL2('t4')">
+        <div class="tenure-company">GetYourGuide AG</div>
+        <div class="tenure-loc">Zurich, Switzerland</div>
+        <div class="tenure-roles">
+          <div class="tenure-role"><span class="role-title">Senior Technical Recruiter</span><span class="role-dates">July 2019 – August 2022</span></div>
+          <div class="tenure-role"><span class="role-title">Interim Technical Recruitment Lead</span><span class="role-dates">April – September 2020</span></div>
+        </div>
+        <div class="tenure-hint">+ Click to explore</div>
+      </div>
+      <div class="layer hidden" id="t4-l2">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t4',2)">×</button>
+          <p class="layer-desc">Grew Zurich Engineering from 30 to 75 as the sole horizontal tech recruiter across Engineering, Data, SRE/DevOps, Product and Design — while rearchitecting the hiring infrastructure for scale and reporting directly to the CTO and CPO.</p>
+          <button class="layer-action" onclick="openL3('t4')">Go deeper <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t4-l3">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t4',3)">×</button>
+          <ul class="bullet-list">
+            <li>Grew Zurich Engineering from 30 to 75 as the sole horizontal tech recruiter — hired across Engineering, Data, SRE/DevOps, Product, and Design</li>
+            <li>Hired across the full tech organisation: Engineering Managers, Software Engineers (Backend, Frontend, Full-Stack, Android, iOS), Data Engineers, Data Analysts, Data Scientists, SRE/DevOps/Security, Product Managers, and Designers</li>
+            <li>Owned end-to-end recruitment from sourcing to offer close</li>
+            <li>Partnered with hiring managers to build effective sourcing, assessment, and closing solutions</li>
+            <li>Built the hiring infrastructure from the ground up: calendar automation, interview library, email template system, reporting dashboard, and full process redesign</li>
+            <li>Provided hiring metrics and forecasts directly to CTO and CPO</li>
+            <li class="sub-head">Interim Lead</li>
+            <li>Managed a team of 4; aligned processes and onboarded Recruiters, Sourcers, and Coordinators during the pandemic</li>
+          </ul>
+          <button class="layer-action" onclick="openL4('t4')">See stack <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t4-l4">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t4',4)">×</button>
+          <div class="chip-row">
+            <span class="chip ats">Greenhouse</span>
+            <span class="chip sourcing">LinkedIn Recruiter</span>
+            <span class="chip assess">CodeSignal</span>
+            <span class="chip schedule">Calendly</span>
+            <span class="chip reporting">Looker</span>
+            <span class="chip workspace">Google Workspace</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Appway -->
+    <div class="tenure" id="t5">
+      <div class="tenure-dot"></div>
+      <div class="tenure-header" onclick="openL2('t5')">
+        <div class="tenure-company">Appway AG</div>
+        <div class="tenure-loc">Zurich, Switzerland</div>
+        <div class="tenure-roles">
+          <div class="tenure-role"><span class="role-title">Interim People &amp; Places Team Lead</span><span class="role-dates">November 2018 – June 2019</span></div>
+          <div class="tenure-role"><span class="role-title">Senior Recruiter</span><span class="role-dates">April 2016 – September 2018</span></div>
+        </div>
+        <div class="tenure-hint">+ Click to explore</div>
+      </div>
+      <div class="layer hidden" id="t5-l2">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t5',2)">×</button>
+          <p class="layer-desc">Grew the organisation from 140 to 250, eliminated CHF 180k in agency spend, rebuilt the ATS from scratch, and led a team of 7 across all people functions — all within a three-year span across two roles.</p>
+          <button class="layer-action" onclick="openL3('t5')">Go deeper <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t5-l3">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t5',3)">×</button>
+          <ul class="bullet-list">
+            <li class="sub-head">People &amp; Places Team Lead</li>
+            <li>Led a team of 7 (Office Managers, HR Generalists, Recruiters) covering all people functions for a 250-person org; reported to CFO and co-developed employee headcount financials</li>
+            <li>Led time-reporting implementation project and supported monthly payroll adjustments</li>
+            <li>Managed on/offboardings, wrote reference letters, and coordinated performance reviews</li>
+            <li class="sub-head">Senior Recruiter</li>
+            <li>Grew organisation from 140 to 250 in one year; led 2 recruiters across Zurich and New York; eliminated external agency fees (CHF 180k → zero) within 12 months</li>
+            <li>Rebuilt ATS from scratch (Jazz → Lever, 50k candidates); digitised offer and approval processes across all entities</li>
+            <li>Maintained and developed company-wide Staff Headcount Tracker</li>
+            <li>Redesigned careers page; trained screeners and managers on in-house recruiting best practices</li>
+            <li>Hired and coached a Junior Recruiter in the New York office</li>
+          </ul>
+          <button class="layer-action" onclick="openL4('t5')">See stack <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t5-l4">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t5',4)">×</button>
+          <div class="chip-row">
+            <span class="chip ats">Lever</span>
+            <span class="chip sourcing">LinkedIn Recruiter</span>
+            <span class="chip workspace">Microsoft 365</span>
+            <span class="chip workspace">Slack</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. Google -->
+    <div class="tenure" id="t6">
+      <div class="tenure-dot"></div>
+      <div class="tenure-header" onclick="openL2('t6')">
+        <div class="tenure-company">Google <span class="tenure-note">contracted via RM IT Pro</span></div>
+        <div class="tenure-loc">Zurich, Switzerland</div>
+        <div class="tenure-roles">
+          <div class="tenure-role"><span class="role-title">Technical Recruiter III</span><span class="role-dates">January 2014 – January 2016</span></div>
+        </div>
+        <div class="tenure-hint">+ Click to explore</div>
+      </div>
+      <div class="layer hidden" id="t6-l2">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t6',2)">×</button>
+          <p class="layer-desc">Full lifecycle tech recruiting across Europe — hiring Software Engineers and TPMs in Zurich and Munich, managing YouTube headcount, and collaborating with global recruiting teams.</p>
+          <button class="layer-action" onclick="openL3('t6')">Go deeper <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t6-l3">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t6',3)">×</button>
+          <ul class="bullet-list">
+            <li>Managed headcount for YouTube; hired Software Engineers and Technical Program Managers across Europe (Zurich, Munich)</li>
+            <li>Led full lifecycle: sourcing, screening, reference checks, offer negotiation, and close</li>
+            <li>Collaborated with global recruiting teams to share best practices</li>
+          </ul>
+          <button class="layer-action" onclick="openL4('t6')">See stack <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t6-l4">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t6',4)">×</button>
+          <div class="chip-row">
+            <span class="chip ats">GHire (internal)</span>
+            <span class="chip sourcing">LinkedIn Recruiter</span>
+            <span class="chip workspace">Google Workspace</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. RM IT -->
+    <div class="tenure" id="t7">
+      <div class="tenure-dot"></div>
+      <div class="tenure-header" onclick="openL2('t7')">
+        <div class="tenure-company">RM IT Professional Resources</div>
+        <div class="tenure-loc">Zurich, Switzerland</div>
+        <div class="tenure-roles">
+          <div class="tenure-role"><span class="role-title">IT Recruiter</span><span class="role-dates">January 2010 – December 2013</span></div>
+        </div>
+        <div class="tenure-hint">+ Click to explore</div>
+      </div>
+      <div class="layer hidden" id="t7-l2">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t7',2)">×</button>
+          <p class="layer-desc">Full lifecycle IT contractor recruitment across banking, pharma, telecom, and startups in Switzerland and Europe — sourcing, negotiating, and managing long-term client and candidate relationships.</p>
+          <button class="layer-action" onclick="openL3('t7')">Go deeper <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t7-l3">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t7',3)">×</button>
+          <ul class="bullet-list">
+            <li>Led full lifecycle IT contractor recruitment across banking, insurance, pharma, telecom, government, and startup sectors in Switzerland and Europe</li>
+            <li>Sourced, closed, and managed negotiations per Swiss labour law</li>
+            <li>Managed online client distribution portals (Fieldglass, Beeline, Newtron, PBroker)</li>
+            <li>Advised candidates on relocation to Switzerland</li>
+          </ul>
+          <button class="layer-action" onclick="openL4('t7')">See stack <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t7-l4">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t7',4)">×</button>
+          <div class="chip-row">
+            <span class="chip ats">Fieldglass</span>
+            <span class="chip ats">Beeline</span>
+            <span class="chip ats">Newtron</span>
+            <span class="chip ats">PBroker</span>
+            <span class="chip ats">Umantis / BullHorn</span>
+            <span class="chip sourcing">LinkedIn Recruiter</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. Swiss Air Force -->
+    <div class="tenure" id="t8">
+      <div class="tenure-dot"></div>
+      <div class="tenure-header" onclick="openL2('t8')">
+        <div class="tenure-company">Swiss Air Force</div>
+        <div class="tenure-loc">Dübendorf, Switzerland</div>
+        <div class="tenure-roles">
+          <div class="tenure-role"><span class="role-title">Staff Sergeant</span><span class="role-dates">2008 – 2009 · Completed 2016</span></div>
+        </div>
+        <div class="tenure-hint">+ Click to explore</div>
+      </div>
+      <div class="layer hidden" id="t8-l2">
+        <div class="layer-card">
+          <button class="layer-close" onclick="closeFrom('t8',2)">×</button>
+          <p class="layer-desc">COMINT (Communications Intelligence), EKF (Electronic Warfare Division).</p>
+          <button class="layer-action" onclick="openL3('t8')">Go deeper <span class="arr">›</span></button>
+        </div>
+      </div>
+      <div class="layer hidden" id="t8-l3">
+        <div class="layer-card" style="text-align:center; padding:2rem 1.5rem;">
+          <button class="layer-close" onclick="closeFrom('t8',3)">×</button>
+          <p style="font-family:monospace; font-size:13px; color:#df3912; letter-spacing:1px; margin:0 0 0.5rem;">ACCESS DENIED</p>
+          <p style="font-family:monospace; font-size:11px; color:#888; margin:0;">Clearance level insufficient.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /timeline -->
+</div><!-- /section-wrap -->
+
+<!-- SYSTEMS EVOLUTION -->
+<div class="evo-section" id="evolution">
+  <div class="evo-inner">
+    <div class="section-label">Tech Stack</div>
+    <h2 class="section-title">Systems Evolution</h2>
+    <p class="evo-caption">How the stack evolved — from VMS-heavy to AI-native.</p>
+    <div class="evo-scroll">
+      <table class="evo-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>RM IT<span class="col-dates">2010–13</span></th>
+            <th>Google<span class="col-dates">2014–16</span></th>
+            <th>Appway<span class="col-dates">2016–19</span></th>
+            <th>GYG<span class="col-dates">2019–22</span></th>
+            <th>DFINITY<span class="col-dates">2021–24</span></th>
+            <th>Caffeine<span class="col-dates">2025–</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ATS</td>
+            <td><span class="evo-cell new">Umantis</span></td>
+            <td><span class="evo-cell new">GHire</span></td>
+            <td><span class="evo-cell new">Lever</span></td>
+            <td><span class="evo-cell new">Greenhouse</span></td>
+            <td><span class="evo-cell used">Greenhouse</span></td>
+            <td><span class="evo-cell new">GEM</span></td>
+          </tr>
+          <tr>
+            <td>CRM</td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-cell new">GEM</span></td>
+            <td><span class="evo-cell used">GEM</span></td>
+          </tr>
+          <tr>
+            <td>VMS</td>
+            <td><span class="evo-cell new">4 portals</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+          </tr>
+          <tr>
+            <td>Sourcing</td>
+            <td><span class="evo-cell new">LI Recruiter</span></td>
+            <td><span class="evo-cell used">LI Recruiter</span></td>
+            <td><span class="evo-cell used">LI Recruiter</span></td>
+            <td><span class="evo-cell used">LI Recruiter</span></td>
+            <td><span class="evo-cell used">LI Recruiter</span></td>
+            <td><span class="evo-cell used">LI Recruiter</span></td>
+          </tr>
+          <tr>
+            <td>Assessment</td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-cell new">CodeSignal</span></td>
+            <td><span class="evo-cell new">CoderPad</span></td>
+            <td><span class="evo-cell new">CoderByte</span></td>
+          </tr>
+          <tr>
+            <td>Scheduling</td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-cell new">Calendly</span></td>
+            <td><span class="evo-cell used">Greenhouse</span></td>
+            <td><span class="evo-cell new">GEM</span></td>
+          </tr>
+          <tr>
+            <td>Interview Notes</td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-cell new">MetaView</span></td>
+            <td><span class="evo-cell used">MetaView</span></td>
+          </tr>
+          <tr>
+            <td>AI</td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-cell ai">Claude</span></td>
+          </tr>
+          <tr>
+            <td>Reporting</td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-cell new">Looker</span></td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-cell ai">Custom Coded</span></td>
+          </tr>
+          <tr>
+            <td>Workspace</td>
+            <td><span class="evo-absent">—</span></td>
+            <td><span class="evo-cell new">Google WS</span></td>
+            <td><span class="evo-cell new">MS 365 · Slack</span></td>
+            <td><span class="evo-cell used">Google WS</span></td>
+            <td><span class="evo-cell used">Google WS</span></td>
+            <td><span class="evo-cell used">Google WS · Slack</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="evo-legend">
+      <div class="evo-legend-item"><div class="evo-dot used"></div>In use</div>
+      <div class="evo-legend-item"><div class="evo-dot new"></div>First appearance</div>
+      <div class="evo-legend-item"><div class="evo-dot ai"></div>AI-native / purpose-built</div>
+    </div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="skills-section" id="skills">
+  <div class="section-label">Capabilities</div>
+  <h2 class="section-title">Skills</h2>
+  <div style="margin-top:36px;">
+    <div class="skill-group">
+      <div class="skill-group-label">Strategy</div>
+      <div class="skill-tags">
+        <span class="chip workspace">Talent Acquisition Strategy</span>
+        <span class="chip workspace">Recruiting Operations (RecOps)</span>
+        <span class="chip workspace">Headcount &amp; Workforce Planning</span>
+        <span class="chip ai">AI-Augmented Hiring</span>
+        <span class="chip workspace">Process Design &amp; Automation</span>
+        <span class="chip workspace">Employer Branding</span>
+        <span class="chip workspace">Diversity &amp; Inclusion</span>
+        <span class="chip workspace">FADP &amp; GDPR</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-label">Execution</div>
+      <div class="skill-tags">
+        <span class="chip workspace">Full-Cycle Technical Recruiting</span>
+        <span class="chip workspace">Structured Interviewing</span>
+        <span class="chip workspace">Multi-Channel Sourcing</span>
+        <span class="chip workspace">Offer Negotiation</span>
+        <span class="chip workspace">Stakeholder Management</span>
+        <span class="chip workspace">Data-Driven Reporting</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-label">Systems</div>
+      <div class="skill-tags">
+        <span class="chip ats">Greenhouse</span>
+        <span class="chip ats">Lever</span>
+        <span class="chip ats">GEM CRM</span>
+        <span class="chip sourcing">LinkedIn Recruiter</span>
+        <span class="chip schedule">Calendly</span>
+        <span class="chip workspace">Notion</span>
+        <span class="chip workspace">Confluence</span>
+        <span class="chip reporting">Looker</span>
+        <span class="chip assess">HackerRank</span>
+        <span class="chip assess">CoderPad</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-label">Certificates</div>
+      <p class="cert-text">People Analytics — UPenn &nbsp;·&nbsp; International Leadership &amp; Org Behavior — Bocconi &nbsp;·&nbsp; Project Management — Google &nbsp;·&nbsp; Unconscious Hiring Biases — Udemy</p>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-label">Languages</div>
+      <p class="lang-text">English (Native) &nbsp;·&nbsp; German (C2)</p>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-label">Interests</div>
+      <p class="lang-text">Travel &nbsp;·&nbsp; Mountaineering &nbsp;·&nbsp; Ski Touring &nbsp;·&nbsp; Adventure Motorcycling &nbsp;·&nbsp; BJJ Purple Belt</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-name" style="display:flex; align-items:center; gap:16px;"><svg viewBox="150 265 725 240" width="100" height="33" aria-label="TAP³"><g fill="#ffffff"><path d="m231.43 296.18v202.95h15.83v-202.95h78.201v-14.275h-172.23v14.275z"/><path d="m432.93 281.9h-15.826l-99.923 217.22h17.068l90.613-199.85 90.924 199.85h17.068z"/><path d="m714.42 301.45c-15.516-13.033-36.928-19.55-64.236-19.55h-77.89v14.275h77.89c22.964 0 40.652 5.2754 53.065 15.516 12.102 10.241 18.309 24.826 18.309 43.445 0 18.93-6.2064 33.515-18.309 43.445-12.413 10.241-30.101 15.206-53.065 15.206h-77.89v85.338h15.826v-71.063h62.064c27.308 0 48.72-6.2064 64.236-19.24 15.516-13.033 23.274-30.722 23.274-53.685 0-22.653-7.758-40.652-23.274-53.685z"/><path d="m858.05 334.66c-8.3786-6.5167-20.171-9.9302-35.687-10.241l42.824-47.479v-8.0683h-95.579v10.551h79.442l-41.583 46.238v8.3786h11.792c13.033 0 22.653 2.4826 29.48 7.1374 6.5167 4.9651 9.9302 11.482 9.9302 19.86 0 8.689-3.4135 15.206-10.241 19.86-6.827 4.9651-16.447 7.1374-29.48 7.1374-9.9302 0-19.24-1.2413-27.308-4.3445-8.0683-2.7929-14.585-6.5167-18.93-11.172l-5.5858 9.3096c4.6548 4.9651 11.792 8.9993 21.102 12.102 9.3096 3.1032 19.55 4.6548 30.722 4.6548 16.447 0 29.17-3.4135 38.169-10.241 8.9993-6.827 13.654-16.137 13.654-27.308 0-10.861-4.3445-19.55-12.723-26.377z"/></g></svg><span style="font-size:14px; color:#8070aa; font-family:-apple-system,sans-serif; font-weight:400;">Marco Mahrer</span></div>
+    <div class="footer-sub">Talent Acquisition Partner &nbsp;·&nbsp; Zürich, Switzerland &nbsp;·&nbsp; Swiss &amp; American</div>
+    <div class="footer-bottom">© 2026 Marco Mahrer</div>
+  </div>
+</footer>
+
+<script>
+function openL2(id) {
+  const l2 = document.getElementById(id + '-l2');
+  const tenure = document.getElementById(id);
+  if (l2.classList.contains('hidden')) {
+    l2.classList.remove('hidden');
+    tenure.classList.add('open');
+    tenure.querySelector('.tenure-hint').style.opacity = '0';
+  } else {
+    closeFrom(id, 2);
+  }
+}
+function openL3(id) {
+  const l3 = document.getElementById(id + '-l3');
+  if (l3) l3.classList.remove('hidden');
+}
+function openL4(id) {
+  const l4 = document.getElementById(id + '-l4');
+  if (l4) l4.classList.remove('hidden');
+}
+function closeFrom(id, from) {
+  for (let i = from; i <= 4; i++) {
+    const el = document.getElementById(id + '-l' + i);
+    if (el) el.classList.add('hidden');
+  }
+  if (from === 2) {
+    document.getElementById(id).classList.remove('open');
+    const hint = document.getElementById(id).querySelector('.tenure-hint');
+    if (hint) hint.style.opacity = '1';
+  }
+}
+// Nav active state on scroll
+const sections = ['top','experience','evolution','skills'];
+const links = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = 'top';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 80) current = id;
+  });
+  links.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+});
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth' });
+    // Close mobile nav on link click
+    document.querySelector('.nav-links').classList.remove('open');
+  });
+});
+</script>
+</body>
+</html>
