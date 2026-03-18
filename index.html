@@ -202,7 +202,10 @@ nav {
 .skill-group { margin-bottom: 28px; }
 .skill-group-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #ccc; margin-bottom: 10px; }
 .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.cert-text, .lang-text { font-size: 13px; color: #999; line-height: 1.9; }
+.cert-list { list-style: none; padding: 0; }
+.cert-list li { font-size: 13px; color: #999; line-height: 1.9; padding-left: 16px; position: relative; }
+.cert-list li::before { content: '·'; position: absolute; left: 0; color: var(--brand-purple); font-weight: 700; }
+.lang-text { font-size: 13px; color: #999; line-height: 1.9; }
 
 /* FOOTER */
 footer { background: var(--brand-purple); padding: 56px 48px; }
@@ -292,7 +295,7 @@ footer { background: var(--brand-purple); padding: 56px 48px; }
 <div class="hero" id="top">
   <p class="hero-your">Your</p>
   <h2 class="hero-title">Talent Acquisition Partner<sup>³</sup></h2>
-  <p class="hero-mission">Positioning tech companies to truly scale their talent before it's too late. By building hiring systems so automated and structured, your team gets its time back to focus on the signals that actually shape culture. 15 years in tech TA across the globe, three inside Switzerland's top 5 tech unicorns. Spearheading the shift to agentic recruitment.</p>
+  <p class="hero-mission">Positioning tech companies to truly scale their talent before it's too late. By building hiring systems so automated and structured, your team gets its time back to focus on the signals that actually shape culture. 15 years in tech TA across the globe, 3 inside Switzerland's top 5 tech unicorns. Spearheading the shift to agentic recruitment.</p>
   <div class="milestones">
     <div class="milestone"><span class="milestone-val">4,500+</span><span class="milestone-label">Interviews</span></div>
     <div class="milestone"><span class="milestone-val">350+</span><span class="milestone-label">Hires</span></div>
@@ -446,7 +449,7 @@ footer { background: var(--brand-purple); padding: 56px 48px; }
         <div class="tenure-company">GetYourGuide AG</div>
         <div class="tenure-loc">Zurich, Switzerland</div>
         <div class="tenure-roles">
-          <div class="tenure-role"><span class="role-title">Senior Technical Recruiter</span><span class="role-dates">July 2019 – August 2022</span></div>
+          <div class="tenure-role"><span class="role-title">Senior Technical Recruiter</span><span class="role-dates">July 2019 – August 2021</span></div>
           <div class="tenure-role"><span class="role-title">Interim Technical Recruitment Lead</span><span class="role-dates">April – September 2020</span></div>
         </div>
         <div class="tenure-hint">+ Click to explore</div>
@@ -822,7 +825,12 @@ footer { background: var(--brand-purple); padding: 56px 48px; }
     </div>
     <div class="skill-group">
       <div class="skill-group-label">Certificates</div>
-      <p class="cert-text">People Analytics — UPenn &nbsp;·&nbsp; International Leadership &amp; Org Behavior — Bocconi &nbsp;·&nbsp; Project Management — Google &nbsp;·&nbsp; Unconscious Hiring Biases — Udemy</p>
+      <ul class="cert-list">
+        <li>People Analytics — UPenn</li>
+        <li>International Leadership &amp; Org Behavior — Bocconi</li>
+        <li>Project Management — Google</li>
+        <li>Unconscious Hiring Biases — Udemy</li>
+      </ul>
     </div>
     <div class="skill-group">
       <div class="skill-group-label">Languages</div>
